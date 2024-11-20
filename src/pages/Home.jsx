@@ -1,5 +1,4 @@
 import React from 'react'
-
 import Header from '../components/Header';
 import BlogCard from '../components/BlogCard';
 
@@ -20,11 +19,12 @@ const Home = () => {
             image: 'https://via.placeholder.com/600x300', // Placeholder image
         },
     ];
+
+
   return (
     <div className="min-h-screen bg-gray-100">
         <Header />
         <main className="p-6">
-            <h1 className="text-4xl font-bold mb-4">THE BLOG</h1>
             <h2 className="text-xl font-semibold mb-6">Recent blog posts</h2>
             <div className="grid gap-6">
                 {blogs.map((blog, index) => (

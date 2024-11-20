@@ -1,13 +1,11 @@
-import { useState } from 'react'
-import Home from './pages/Home'
+import React from 'react'
+import { Outlet } from 'react-router-dom'
 
 function App() {
 
   return (
     <>
-      <div>
-        <Home />
-      </div>
+      <Outlet/>
     </>
   )
 }
