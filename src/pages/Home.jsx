@@ -9,14 +9,14 @@ const Home = () => {
             date: 'Sunday, 1 Jan 2023',
             description: 'How do you create compelling presentations that wow your colleagues and impress your managers?',
             tags: ['Design', 'Research', 'Presentation'],
-            image: 'https://via.placeholder.com/600x300', // Placeholder image
+            image: 'https://via.placeholder.com/600x300', 
         },
         {
             title: 'Migrating to Linear 101',
             date: 'Sunday, 1 Jan 2023',
             description: 'Linear helps streamline software projects, sprints, tasks, and bug tracking. Here’s how to get started.',
             tags: ['Design', 'Research'],
-            image: 'https://via.placeholder.com/600x300', // Placeholder image
+            image: 'https://via.placeholder.com/600x300', 
         },
     ];
 

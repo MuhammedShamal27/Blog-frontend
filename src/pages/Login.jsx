@@ -50,7 +50,6 @@ const Login = () => {
         if(errors.filter(error => error !== "").length === 0){
             try{
                 const response = await LoginUser(userData);
-                console.log('handleLogin',response?.data?.access_token)
                 if (response){
 
                     localStorage.setItem("token", response.data.access_token);

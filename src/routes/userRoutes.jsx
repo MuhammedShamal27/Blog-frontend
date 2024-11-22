@@ -5,6 +5,8 @@ import Home from '../pages/Home'
 import Register from '../pages/Register'
 import Login from '../pages/Login'
 import AddBlog from '../pages/AddBlog'
+import BlogListing from '../pages/BlogListing'
+import EditBlog from '../pages/EditBlog'
 
 const userRoutes = createBrowserRouter ([{
     path: '/',
@@ -26,6 +28,14 @@ const userRoutes = createBrowserRouter ([{
         {
             path: '/new-blog',
             element: <AddBlog/>
+        },
+        {
+            path: '/blog-listing',
+            element: <BlogListing/>
+        },
+        {
+            path: '/edit-blog/:id',
+            element: <EditBlog/>
         }
     ]
 }],
