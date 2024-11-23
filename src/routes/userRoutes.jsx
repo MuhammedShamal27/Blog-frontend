@@ -7,6 +7,10 @@ import Login from '../pages/Login'
 import AddBlog from '../pages/AddBlog'
 import BlogListing from '../pages/BlogListing'
 import EditBlog from '../pages/EditBlog'
+import BlogDetailView from '../pages/BlogDetailView'
+import ProfileEdit from '../pages/ProfileEdit'
+import Profile from '../pages/Profile'
+import ProtectRoutes from './ProtectRoutes'
 
 const userRoutes = createBrowserRouter ([{
     path: '/',
@@ -27,15 +31,27 @@ const userRoutes = createBrowserRouter ([{
         },
         {
             path: '/new-blog',
-            element: <AddBlog/>
+            element: <ProtectRoutes> <AddBlog/> </ProtectRoutes>
         },
         {
             path: '/blog-listing',
-            element: <BlogListing/>
+            element: <ProtectRoutes> <BlogListing/> </ProtectRoutes> 
         },
         {
-            path: '/edit-blog/:id',
-            element: <EditBlog/>
+            path: '/blog/:slug',
+            element: <ProtectRoutes> <BlogDetailView/> </ProtectRoutes>
+        },
+        {
+            path: '/edit-blog/:slug',
+            element: <ProtectRoutes> <EditBlog/> </ProtectRoutes>
+        },
+        {
+            path: '/profile',
+            element: <ProtectRoutes> <Profile/> </ProtectRoutes>
+        },
+        {
+            path: '/edit-profile',
+            element: <ProtectRoutes> <ProfileEdit/> </ProtectRoutes>
         }
     ]
 }],

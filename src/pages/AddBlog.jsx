@@ -3,13 +3,16 @@ import Header from '../components/Header';
 import BlogForm from '../components/BlogForm';
 import { NewBlog } from '../services/api/userApi';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 const AddBlog = () => {
+    const navigate = useNavigate();
 
     const handleCreateBlog = async (payload) => {
         try {
           const response = await NewBlog(payload);
           if (response) toast.success("Blog created successfully");
+          navigate('/blog-listing')
         } catch (error) {
           toast.error("Failed to create blog.");
         }

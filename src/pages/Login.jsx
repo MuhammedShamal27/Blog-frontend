@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import InputField from '../components/InputField'
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,13 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+            navigate("/", { replace: true }); 
+        }
+    }, [navigate]);
+
 
     const validateInputFields = (id,value) => {
         switch (id) {
@@ -26,6 +33,7 @@ const Login = () => {
             }
             return "";
         }
+
 
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -55,7 +63,7 @@ const Login = () => {
                     localStorage.setItem("token", response.data.access_token);
                     localStorage.setItem("refresh_token", response.data.refresh_token);
                     toast.success(response.data.message)
-                    navigate('/')
+                    navigate('/',{ replace: true })
                 }
             }catch(error){
                 console.log('error',error)
@@ -63,6 +71,7 @@ const Login = () => {
             }
         }
     };
+
 
   return (
 

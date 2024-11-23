@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { UserHome, UserLogout } from "../services/api/userApi";
-import { Plus, Search, LogOut, CircleUserRound, Edit, FileText, Logs } from 'lucide-react';
+import { Search, LogOut, CircleUserRound, FileText, Logs } from 'lucide-react';
 import { toast } from "sonner";
 
 const Header = () => {
@@ -15,6 +15,7 @@ const Header = () => {
     const fetchUser = async () => {
       try {
         const currentUser = await UserHome();
+        console.log(currentUser)
         setUser(currentUser);
         setIsProfilePicture(currentUser.data.profile_picture);
         setIsLoggedIn(true);
@@ -30,6 +31,8 @@ const Header = () => {
     try {
       const response = await UserLogout();
       if (response) {
+        localStorage.removeItem('token')
+        localStorage.removeItem('refresh_token')
         console.log(response);
         toast.success("Logout Successful");
         navigate('/login');
@@ -48,8 +51,8 @@ const Header = () => {
     navigate('/blog-listing');
   };
 
-  const handleEditProfile = () => {
-    navigate('/edit-profile');
+  const handleProfile = () => {
+    navigate('/profile');
   };
 
   const handleLogin = () => {
@@ -75,7 +78,7 @@ const Header = () => {
               {/* Profile Picture or Icon */}
               <div className="cursor-pointer" onClick={toggleDropdown}>
                 {isProfilePicture ? (
-                  <img src={user?.profile_picture || ""} alt="profile" className="h-8 w-8 rounded-full" />
+                  <img src={user?.data.profile_picture || "https://banner2.cleanpng.com/20180404/sqe/avhxkafxo.webp" } alt="profile" className="h-8 w-8 rounded-full" />
                 ) : (
                   <CircleUserRound className="w-8 h-8" />
                 )}
@@ -99,11 +102,11 @@ const Header = () => {
                       <span>My Blogs</span>
                     </button>
                     <button
-                      onClick={handleEditProfile}
+                      onClick={handleProfile}
                       className="w-full text-left flex items-center space-x-2 px-4 py-2 hover:bg-gray-200 rounded-md"
                     >
-                      <Edit className="w-5 h-5" />
-                      <span>Edit Profile</span>
+                      <CircleUserRound className="w-5 h-5" />
+                      <span>Profile</span>
                     </button>
                     <button
                       onClick={handleLogout}

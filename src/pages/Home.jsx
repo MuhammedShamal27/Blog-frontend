@@ -1,39 +1,58 @@
-import React from 'react'
-import Header from '../components/Header';
-import BlogCard from '../components/BlogCard';
+import React, { useEffect, useState } from "react";
+import Header from "../components/Header";
+import BlogCard from "../components/BlogCard";
+import { BlogList } from "../services/api/userApi";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-    const blogs = [
-        {
-            title: 'UX review presentations',
-            date: 'Sunday, 1 Jan 2023',
-            description: 'How do you create compelling presentations that wow your colleagues and impress your managers?',
-            tags: ['Design', 'Research', 'Presentation'],
-            image: 'https://via.placeholder.com/600x300', 
-        },
-        {
-            title: 'Migrating to Linear 101',
-            date: 'Sunday, 1 Jan 2023',
-            description: 'Linear helps streamline software projects, sprints, tasks, and bug tracking. Here’s how to get started.',
-            tags: ['Design', 'Research'],
-            image: 'https://via.placeholder.com/600x300', 
-        },
-    ];
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/login", { replace: true });
+    } else {
+      window.history.replaceState(null, "", "/");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await BlogList();
+        console.log(response.data);
+        setBlogs(Array.isArray(response.data) ? response.data : []);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlogs();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!blogs.length) {
+    return <div>No blogs available.</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
-        <Header />
-        <main className="p-6">
-            <h2 className="text-xl font-semibold mb-6">Recent blog posts</h2>
-            <div className="grid gap-6">
-                {blogs.map((blog, index) => (
-                    <BlogCard key={index} blog={blog} />
-                ))}
-            </div>
-        </main>
+      <Header />
+      <main className="p-6">
+        <h2 className="text-xl font-semibold mb-6">Recent blog posts</h2>
+        <div className="grid gap-6">
+          {blogs.map((blog, index) => (
+            <BlogCard key={index} blog={blog} showActions={false} />
+          ))}
+        </div>
+      </main>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

@@ -51,6 +51,23 @@ export const UserHome = async () => {
 };
 
 
+export const BlogList = async () => {
+    try {
+        const response = await axiosInstance.get(`${userBasePath}/blogs/`);
+        return { 
+            status: "success", 
+            data: response.data 
+        };
+    } catch (err) {
+        if (!err.response) throw err;
+        return Promise.reject({
+            status: err.response.status,
+            message: err.response.data.message || "Something went wrong",
+        });
+    }
+};
+
+
 export const NewBlog = async (payload) => {
     try {
         const response = await axiosInstance.post(`${userBasePath}/add-blog/`,payload);
@@ -67,9 +84,9 @@ export const NewBlog = async (payload) => {
     }
 };
 
-export const EditABlog = async (id) => {
+export const EditABlog = async (slug, payload) => {
     try {
-        const response = await axiosInstance.post(`${userBasePath}/edit-blog/${id}/`,payload);
+        const response = await axiosInstance.patch(`${userBasePath}/edit-blog/${slug}/`,payload);
         return { 
             status: "success", 
             data: response.data 
@@ -84,9 +101,9 @@ export const EditABlog = async (id) => {
 };
 
 
-export const GetBlogDetails = async (id) => {
+export const DeleteBlog = async (id) => {
     try {
-        const response = await axiosInstance.get(`${userBasePath}/blogs/${id}/`);
+        const response = await axiosInstance.delete(`${userBasePath}/delete/${id}/`);
         return { 
             status: "success", 
             data: response.data 
@@ -115,6 +132,56 @@ export const UserBlogs = async () => {
         });
     }
 };
+
+export const BlogFullDetails = async (slug) => {
+    try {
+        const response = await axiosInstance.get(`${userBasePath}/blogs/${slug}/`);
+        return { 
+            status: "success", 
+            data: response.data 
+        };
+    } catch (err) {
+        if (!err.response) throw err;
+        return Promise.reject({
+            status: err.response.status,
+            message: err.response.data.message || "Something went wrong",
+        });
+    }
+};
+
+
+export const ProfileData = async () => {
+    try {
+        const response = await axiosInstance.get(`${userBasePath}/profile/`);
+        return { 
+            status: "success", 
+            data: response.data 
+        };
+    } catch (err) {
+        if (!err.response) throw err;
+        return Promise.reject({
+            status: err.response.status,
+            message: err.response.data.message || "Something went wrong",
+        });
+    }
+};
+
+export const UpdateProfile = async (payload) => {
+    try {
+        const response = await axiosInstance.patch(`${userBasePath}/edit-profile/`,payload);
+        return { 
+            status: "success", 
+            data: response.data 
+        };
+    } catch (err) {
+        if (!err.response) throw err;
+        return Promise.reject({
+            status: err.response.status,
+            message: err.response.data.message || "Something went wrong",
+        });
+    }
+};
+
 
 export const UserLogout = async () => {
     try {

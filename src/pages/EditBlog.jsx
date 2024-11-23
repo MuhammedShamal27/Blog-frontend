@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import BlogForm from "../components/BlogForm";
-import { EditABlog, GetBlogDetails } from "../services/api/userApi";
-import { useParams } from "react-router-dom";
+import { BlogFullDetails, EditABlog } from "../services/api/userApi";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 const EditBlog = () => {
-  const { id } = useParams(); 
+  const { slug } = useParams(); 
   const [initialData, setInitialData] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
 
 
   useEffect(() => {
     const fetchBlogDetails = async () => {
       try {
-        const blogDetails  = await GetBlogDetails(id);
+        const blogDetails  = await BlogFullDetails(slug);
         console.log(blogDetails)
-        setInitialData(blogDetails );
+        setInitialData(blogDetails.data.data );
         setLoading(false); 
       } catch (error) {
         setLoading(false);
@@ -26,12 +26,14 @@ const EditBlog = () => {
     };
 
     fetchBlogDetails();
-  }, [id]);
+  }, [slug]);
 
   const handleEditBlog = async (payload) => {
     try {
-      const response = await EditABlog(id, payload);
+      const response = await EditABlog(slug, payload);
+      console.log(response)
       if (response) toast.success("Blog updated successfully");
+      navigate('/blog-listing')
     } catch (error) {
       toast.error("Failed to update blog.");
     }
@@ -56,7 +58,7 @@ const EditBlog = () => {
           <div>
             <BlogForm
               apiFunction={handleEditBlog}
-              initialData={initialData || {}}
+              initialData={initialData}
               buttonLabel="Update Blog"
             />
           </div>
