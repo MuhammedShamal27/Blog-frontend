@@ -20,6 +20,7 @@ export const registerUser = async (userData) => {
 
 export const LoginUser = async (userData) => {
     try {
+        console.log("axiosInstance,",axiosInstance,)
         const response = await axiosInstance.post(`${userBasePath}/login/`, userData);
         return { 
             status: "success", 

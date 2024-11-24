@@ -84,13 +84,13 @@ const Profile = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={handleEditProfile}
-              className="px-6 py-2 bg-black text-white hover:bg-gray-800 transition-colors"
+              className="px-6 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
             >
               Edit Profile
             </button>
             <button
               onClick={handleLogout}
-              className="px-6 py-2 border border-black text-black hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"
+              className="px-6 py-2 border border-black text-black rounded-md hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"
             >
               <LogOut size={20} />
               Logout

@@ -57,6 +57,7 @@ const Login = () => {
         }
         if(errors.filter(error => error !== "").length === 0){
             try{
+                console.log('login user',userData)
                 const response = await LoginUser(userData);
                 if (response){
 
