@@ -13,7 +13,7 @@ export const registerUser = async (userData) => {
         if (!err.response) throw err;
         return Promise.reject({
             status: err.response.status,
-            message: err.response.data.message || "Something went wrong",
+            message: err.response.data.details || "Something went wrong",
         });
     }
 };
@@ -30,7 +30,7 @@ export const LoginUser = async (userData) => {
         if (!err.response) throw err;
         return Promise.reject({
             status: err.response.status,
-            message: err.response.data.message || "Something went wrong",
+            message: err.response.data.details || "Something went wrong",
         });
     }
 };
