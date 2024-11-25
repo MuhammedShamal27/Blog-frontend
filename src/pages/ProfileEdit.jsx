@@ -63,7 +63,7 @@ const EditProfile = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      const response = await UpdateProfile(userData.id, formData);
+      const response = await UpdateProfile(formData);
       if (response?.status === "success") {
         toast.success("Profile updated successfully!");
         navigate("/profile");

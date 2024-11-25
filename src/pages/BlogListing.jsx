@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
-import { UserBlogs, DeleteBlog } from "../services/api/userApi"; // Ensure DeleteBlog is imported
+import { UserBlogs, DeleteBlog } from "../services/api/userApi";
 import { useNavigate } from "react-router-dom";
-import BlogCard from "../components/BlogCard"; // Assuming BlogCard is a reusable component
+import BlogCard from "../components/BlogCard";
 import { toast } from "sonner";
 
 const BlogListing = () => {
   const [blogs, setBlogs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [confirmationText, setConfirmationText] = useState("");
   const navigate = useNavigate();
+
+  const blogsPerPage = 5; // Number of blogs displayed per page
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -20,7 +23,7 @@ const BlogListing = () => {
           setBlogs(response.data);
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     fetchBlogs();
@@ -49,7 +52,7 @@ const BlogListing = () => {
 
     try {
       const response = await DeleteBlog(deleteId);
-      setBlogs(blogs.filter((blog) => blog.id !== deleteId)); // Remove the deleted blog from the list
+      setBlogs(blogs.filter((blog) => blog.id !== deleteId));
       toast.success(response.message || "Blog deleted successfully.");
       closeDeleteModal();
     } catch (error) {
@@ -58,6 +61,24 @@ const BlogListing = () => {
     }
   };
 
+  const handleNextPage = () => {
+    if (currentPage < Math.ceil(blogs.length / blogsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Determine the blogs to display on the current page
+  const currentBlogs = blogs.slice(
+    (currentPage - 1) * blogsPerPage,
+    currentPage * blogsPerPage
+  );
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -65,10 +86,9 @@ const BlogListing = () => {
 
       {/* Blog Listing */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        {blogs.length > 0 ? (
-          blogs.map((blog) => (
+        {currentBlogs.length > 0 ? (
+          currentBlogs.map((blog) => (
             <div key={blog.id} className="relative group">
-              {/* Reusing BlogCard */}
               <BlogCard
                 blog={blog}
                 showActions={true}
@@ -83,10 +103,27 @@ const BlogListing = () => {
 
         {/* Pagination */}
         <div className="flex justify-center mt-8 space-x-2">
-          <button className="px-4 py-2 border rounded-md hover:bg-gray-100">
+          <button
+            onClick={handlePreviousPage}
+            className={`px-4 py-2 border rounded-md hover:bg-gray-100 ${
+              currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={currentPage === 1}
+          >
             Previous
           </button>
-          <button className="px-4 py-2 border rounded-md hover:bg-gray-100">
+          <span className="px-4 py-2">
+            Page {currentPage} of {Math.ceil(blogs.length / blogsPerPage)}
+          </span>
+          <button
+            onClick={handleNextPage}
+            className={`px-4 py-2 border rounded-md hover:bg-gray-100 ${
+              currentPage === Math.ceil(blogs.length / blogsPerPage)
+                ? "opacity-50 cursor-not-allowed"
+                : ""
+            }`}
+            disabled={currentPage === Math.ceil(blogs.length / blogsPerPage)}
+          >
             Next
           </button>
         </div>
